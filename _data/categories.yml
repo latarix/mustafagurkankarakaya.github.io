@@ -1,0 +1,6 @@
+# Kategori adı: renk (red | amber | blue | grey)
+# Listede olmayan kategoriler gri görünür.
+Red Team: red
+Malware Analysis: amber
+Forensic: blue
+Tarih: grey

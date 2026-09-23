@@ -1,0 +1,7 @@
+<nav class="links" aria-label="Bağlantılar">
+  <a href="{{ '/#about' | relative_url }}">Hakkımda</a>
+  {% if site.social.github %}<a href="https://github.com/{{ site.social.github }}">GitHub</a>{% endif %}
+  {% if site.social.linkedin %}<a href="https://www.linkedin.com/in/{{ site.social.linkedin }}">LinkedIn</a>{% endif %}
+  <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+  <button class="theme-btn" id="theme" type="button">Tema</button>
+</nav>

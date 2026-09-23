@@ -1,0 +1,19 @@
+---
+layout: page
+title: Sayfa bulunamadı
+permalink: /404.html
+sitemap: false
+---
+<script>
+  (function () {
+    var p = location.pathname;
+    var m = p.match(/^\/(tags|categories)\/([^/]+)\/?$/);
+    if (m) {
+      var key = m[1] === "tags" ? "tag=" : "category=";
+      location.replace("/?q=" + encodeURIComponent(key + decodeURIComponent(m[2])));
+    } else if (/^\/(tags|categories|archives|about)\/?$/.test(p)) {
+      location.replace(p.indexOf("about") > -1 ? "/#about" : "/");
+    }
+  })();
+</script>
+<p>Aradığın sayfa bu adreste yok. Yazıların tamamı <a href="{{ '/' | relative_url }}">ana sayfadaki aramada</a>.</p>

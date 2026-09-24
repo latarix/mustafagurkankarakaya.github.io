@@ -1,18 +1,11 @@
 ---
 layout: default
 ---
-{%- assign latest = site.posts | first -%}
 <main id="content">
   <section class="hero">
     <div class="hero-copy">
-      <ul class="boot" aria-hidden="true">
-        <li><span class="ok">[  OK  ]</span> {{ site.posts.size }} kayıt indekslendi</li>
-        <li><span class="ok">[  OK  ]</span> {{ site.categories.size }} kaynak izleniyor</li>
-        {% if latest %}<li><span class="warn">[ INFO ]</span> son olay {{ latest.date | date: "%Y-%m-%d" }}</li>{% endif %}
-      </ul>
-      <h1 class="sr">{{ site.author.name | default: site.title }}</h1>
-      <p class="who" aria-hidden="true">Mustafa Gürkan</p>
-      {% include ascii.html %}
+      <p class="prompt" aria-hidden="true"><span class="p">gurkan@soc:~$</span> whoami</p>
+      <h1 class="name">Mustafa Gürkan<br>Karakaya<span class="caret" aria-hidden="true"></span></h1>
       {% if site.description and site.description != "" %}<p class="lead">{{ site.description }}</p>{% endif %}
       <div class="cta">
         <a class="btn primary" href="#posts">Yazıları incele</a>

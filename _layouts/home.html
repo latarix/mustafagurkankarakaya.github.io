@@ -5,20 +5,22 @@ layout: default
 <main id="content">
   <section class="hero">
     <div class="hero-copy">
-      <p class="prompt"><span class="u">gurkan@soc</span>:<span class="d">~</span>$ whoami</p>
-      <h1 class="glitch">Mustafa Gürkan<br>Karakaya</h1>
-      <dl class="stats">
-        <div><dt>Yazı</dt><dd>{{ site.posts.size }}</dd></div>
-        <div><dt>Kategori</dt><dd>{{ site.categories.size }}</dd></div>
-        {% if latest %}<div><dt>Son yazı</dt><dd>{{ latest.date | date: "%d.%m.%Y" }}</dd></div>{% endif %}
-      </dl>
+      <ul class="boot" aria-hidden="true">
+        <li><span class="ok">[  OK  ]</span> {{ site.posts.size }} kayıt indekslendi</li>
+        <li><span class="ok">[  OK  ]</span> {{ site.categories.size }} kaynak izleniyor</li>
+        {% if latest %}<li><span class="warn">[ INFO ]</span> son olay {{ latest.date | date: "%Y-%m-%d" }}</li>{% endif %}
+      </ul>
+      <h1 class="sr">{{ site.author.name | default: site.title }}</h1>
+      <p class="who" aria-hidden="true">Mustafa Gürkan</p>
+      {% include ascii.html %}
+      {% if site.description and site.description != "" %}<p class="lead">{{ site.description }}</p>{% endif %}
       <div class="cta">
         <a class="btn primary" href="#posts">Yazıları incele</a>
         {% if site.social.github %}<a class="btn ghost" href="https://github.com/{{ site.social.github }}">GitHub profilim</a>{% endif %}
       </div>
     </div>
     <div class="term" aria-hidden="true">
-      <div class="term-bar"><i></i><i></i><i></i><span>gurkan@soc: ~</span></div>
+      <div class="term-bar"><span>gurkan@soc: ~</span><span class="live">canlı</span></div>
       <pre class="term-out" id="term-out"></pre>
     </div>
   </section>
@@ -28,15 +30,17 @@ layout: default
       <h2 id="posts-title">Yazılar</h2>
       <label class="search">
         <span class="sr">Yazılarda ara</span>
-        <input id="q" type="search" placeholder="Yazılarda ara: ldap, wannacry, volatility" autocomplete="off" spellcheck="false">
+        <span class="grep" aria-hidden="true">grep -i</span>
+        <input id="q" type="search" placeholder="ldap, wannacry, volatility" autocomplete="off" spellcheck="false">
         <kbd>/</kbd>
       </label>
     </div>
     <div class="chips" id="chips" role="group" aria-label="Kategori filtresi">
       <button type="button" class="chip" data-cat="" aria-pressed="true">Tümü <span>{{ site.posts.size }}</span></button>
       {%- for c in site.categories -%}
-      {%- assign col = site.data.categories[c[0]].color | default: "purple" -%}
-      <button type="button" class="chip" style="--c:var(--{{ col }})" data-cat="{{ c[0] | escape }}" aria-pressed="false">{{ c[0] }} <span>{{ c[1].size }}</span></button>
+      {%- assign cname = c[0] -%}
+      {%- assign col = site.data.categories[cname].color | default: "purple" -%}
+      <button type="button" class="chip" style="--c:var(--{{ col }})" data-cat="{{ cname | escape }}" aria-pressed="false">{{ cname }} <span>{{ c[1].size }}</span></button>
       {%- endfor -%}
       <button type="button" class="chip tag-chip" id="tag-chip" hidden></button>
     </div>
@@ -45,7 +49,7 @@ layout: default
       {% for post in site.posts %}{% include card.html post=post feat=forloop.first %}{% endfor %}
     </div>
     <div class="empty" id="empty" hidden>
-      <p>Bu aramayla eşleşen yazı yok.</p>
+      <p>Bu aramayla eşleşen yazı yok. Başka bir kelime dene ya da filtreleri temizle.</p>
       <button type="button" class="btn ghost" id="reset">Filtreleri temizle</button>
     </div>
   </section>

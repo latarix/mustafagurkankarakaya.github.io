@@ -8,21 +8,20 @@
 {%- assign excerpt = p.description | default: p.excerpt | strip_html | normalize_whitespace | truncate: 180 -%}
 {%- assign tagstr = p.tags | join: " " -%}
 {%- capture searchtext -%}{{ p.title }} {{ excerpt }} {{ cat }} {{ tagstr }}{%- endcapture -%}
-<article class="card{% if include.feat %} feat{% endif %}" style="--c:var(--{{ col }})"
+<article class="card{% if include.feat %} feat{% endif %}{% if cover %} has-art{% endif %}" style="--c:var(--{{ col }})"
   data-cat="{{ cat | escape }}" data-tags="{{ p.tags | join: '|' | escape }}"
   data-text="{{ searchtext | escape }}">
   <a class="card-link" href="{{ p.url | relative_url }}">
-    <div class="card-art">
-      {% if cover %}<img src="{{ cover | relative_url }}" alt="" loading="lazy">{% else %}<span class="code">{{ code }}</span>{% endif %}
+    <div class="card-meta">
+      <time datetime="{{ p.date | date: '%Y-%m-%d' }}">{{ p.date | date: "%Y-%m-%d" }}</time>
+      <span class="sev" title="{{ cat | escape }}">[{{ code }}]</span>
+      <span class="cat">{{ cat }}</span>
     </div>
     <div class="card-body">
-      <div class="card-meta">
-        <span class="cat">{{ cat }}</span>
-        <time datetime="{{ p.date | date: '%Y-%m-%d' }}">{{ p.date | date: "%d.%m.%Y" }}</time>
-      </div>
       <h3>{{ p.title }}</h3>
-      <p>{{ excerpt }}</p>
+      {% if excerpt != "" %}<p>{{ excerpt }}</p>{% endif %}
       {% if p.tags.size > 0 %}<div class="card-tags">{% for t in p.tags limit: 4 %}<span>#{{ t }}</span>{% endfor %}</div>{% endif %}
     </div>
+    {% if cover %}<div class="card-art"><img src="{{ cover | relative_url }}" alt="" loading="lazy"></div>{% endif %}
   </a>
 </article>

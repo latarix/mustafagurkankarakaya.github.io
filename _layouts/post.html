@@ -2,7 +2,9 @@
 layout: default
 ---
 {%- assign cat = page.categories | first | default: "Genel" -%}
-{%- assign col = site.data.categories[cat].color | default: "purple" -%}
+{%- assign meta = site.data.categories[cat] -%}
+{%- assign col = meta.color | default: "purple" -%}
+{%- assign code = meta.code | default: "LOG" -%}
 {%- assign words = content | strip_html | number_of_words -%}
 {%- assign minutes = words | divided_by: 200 | plus: 1 -%}
 {%- assign cover = page.image.path | default: page.image -%}
@@ -11,12 +13,13 @@ layout: default
   <article class="post">
     <header class="post-hero">
       <a class="back" href="{{ '/#posts' | relative_url }}">Tüm yazılar</a>
+      <p class="cmd-line" aria-hidden="true"><span class="p">$</span> cat {{ page.slug | default: page.title | slugify }}.md</p>
+      <h1 class="post-title">{{ page.title }}</h1>
       <div class="post-meta">
-        <a class="cat" href="{{ '/' | relative_url }}?category={{ cat | url_encode }}#posts">{{ cat }}</a>
-        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%d.%m.%Y" }}</time>
+        <a class="cat" href="{{ '/' | relative_url }}?category={{ cat | url_encode }}#posts"><span class="sev">[{{ code }}]</span> {{ cat }}</a>
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
         <span>{{ minutes }} dk okuma</span>
       </div>
-      <h1 class="post-title">{{ page.title }}</h1>
       {% if page.tags.size > 0 %}<div class="post-tags">{% for t in page.tags %}<a href="{{ '/' | relative_url }}?tag={{ t | url_encode }}#posts">#{{ t }}</a>{% endfor %}</div>{% endif %}
     </header>
 

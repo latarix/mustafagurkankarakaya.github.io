@@ -1,11 +1,11 @@
 <header class="bar">
   <a class="brand" href="{{ '/' | relative_url }}" aria-label="Ana sayfa">
-    <span class="mark" aria-hidden="true">MGK</span><span class="brand-name">{{ site.title }}</span>
+    <span class="host">root@mgk</span><span class="path">:~#</span><span class="caret" aria-hidden="true"></span>
   </a>
   <nav class="links" aria-label="Bağlantılar">
-    <a href="{{ '/#posts' | relative_url }}">Yazılar</a>
-    {% if site.social.github %}<a href="https://github.com/{{ site.social.github }}">GitHub</a>{% endif %}
-    {% if site.social.linkedin %}<a href="https://www.linkedin.com/in/{{ site.social.linkedin }}">LinkedIn</a>{% endif %}
-    <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+    <a href="{{ '/#posts' | relative_url }}">yazılar</a>
+    {% if site.social.github %}<a href="https://github.com/{{ site.social.github }}">github</a>{% endif %}
+    {% if site.social.linkedin %}<a href="https://www.linkedin.com/in/{{ site.social.linkedin }}">linkedin</a>{% endif %}
+    <a href="{{ '/feed.xml' | relative_url }}">rss</a>
   </nav>
 </header>

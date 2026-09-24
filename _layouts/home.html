@@ -1,62 +1,54 @@
 ---
 layout: default
 ---
-<header class="top">
-  <div>
-    <h1 class="name">Mustafa Gürkan<br>Karakaya</h1>
-    <p class="role">{{ site.description }}</p>
-  </div>
-  {% include nav.html %}
-</header>
-
+{%- assign latest = site.posts | first -%}
 <main id="content">
-  <section class="search" aria-label="Yazılarda ara">
-    <div class="qrow">
-      <label class="qfixed" for="q">index=blog</label>
-      <input class="qinput" id="q" type="search" autocomplete="off" spellcheck="false"
-        placeholder='ara ya da filtrele: category="Red Team" tag=nmap lang=tr'>
-      <button class="qclear" id="clear" type="button">Temizle</button>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="prompt"><span class="u">gurkan@soc</span>:<span class="d">~</span>$ whoami</p>
+      <h1 class="glitch">Mustafa Gürkan<br>Karakaya</h1>
+      <p class="lead">{{ site.description }}</p>
+      <dl class="stats">
+        <div><dt>Yazı</dt><dd>{{ site.posts.size }}</dd></div>
+        <div><dt>Kategori</dt><dd>{{ site.categories.size }}</dd></div>
+        {% if latest %}<div><dt>Son yazı</dt><dd>{{ latest.date | date: "%d.%m.%Y" }}</dd></div>{% endif %}
+      </dl>
+      <div class="cta">
+        <a class="btn primary" href="#posts">Yazıları incele</a>
+        {% if site.social.github %}<a class="btn ghost" href="https://github.com/{{ site.social.github }}">GitHub profilim</a>{% endif %}
+      </div>
     </div>
-    <div class="status" aria-live="polite">
-      <span id="count"><b>{{ site.posts.size }}</b> yazı</span>
-      <span>Alanlara, çubuklara ya da etiketlere tıklayarak sorguya ekle</span>
-    </div>
-    <div class="hist" id="hist" hidden>
-      <div class="bars" id="bars"></div>
-      <div class="months" id="months" aria-hidden="true"></div>
+    <div class="term" aria-hidden="true">
+      <div class="term-bar"><i></i><i></i><i></i><span>gurkan@soc: ~</span></div>
+      <pre class="term-out" id="term-out"></pre>
     </div>
   </section>
 
-  <div class="main">
-    <aside class="fields" id="fields" aria-label="Alanlar" hidden>
-      <div class="field"><h2>category</h2><ul id="f-category"></ul></div>
-      <div class="field"><h2>tag</h2><ul id="f-tag"></ul></div>
-      <div class="field"><h2>lang</h2><ul id="f-lang"></ul></div>
-    </aside>
-    <section class="events" aria-label="Yazılar">
-      <div id="list">
-        {% for post in site.posts %}{% include event.html post=post %}{% endfor %}
-      </div>
-    </section>
-  </div>
-
-  <section class="about" id="about">
-    <h2>Hakkımda</h2>
-    <div>
-      <p>{{ site.data.profile.intro }}</p>
-      <dl>
-        {% for f in site.data.profile.fields %}<dt>{{ f.key }}</dt><dd>{{ f.value }}</dd>{% endfor %}
-        {% if site.social.email %}<dt>İletişim</dt><dd><a href="mailto:{{ site.social.email }}">{{ site.social.email }}</a></dd>{% endif %}
-      </dl>
+  <section class="posts" id="posts" aria-labelledby="posts-title">
+    <div class="posts-head">
+      <h2 id="posts-title">Yazılar</h2>
+      <label class="search">
+        <span class="sr">Yazılarda ara</span>
+        <input id="q" type="search" placeholder="Yazılarda ara: ldap, wannacry, volatility" autocomplete="off" spellcheck="false">
+        <kbd>/</kbd>
+      </label>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Kategori filtresi">
+      <button type="button" class="chip" data-cat="" aria-pressed="true">Tümü <span>{{ site.posts.size }}</span></button>
+      {%- for c in site.categories -%}
+      {%- assign col = site.data.categories[c[0]].color | default: "purple" -%}
+      <button type="button" class="chip" style="--c:var(--{{ col }})" data-cat="{{ c[0] | escape }}" aria-pressed="false">{{ c[0] }} <span>{{ c[1].size }}</span></button>
+      {%- endfor -%}
+      <button type="button" class="chip tag-chip" id="tag-chip" hidden></button>
+    </div>
+    <p class="count" id="count" aria-live="polite"></p>
+    <div class="grid" id="grid">
+      {% for post in site.posts %}{% include card.html post=post feat=forloop.first %}{% endfor %}
+    </div>
+    <div class="empty" id="empty" hidden>
+      <p>Bu aramayla eşleşen yazı yok.</p>
+      <button type="button" class="btn ghost" id="reset">Filtreleri temizle</button>
     </div>
   </section>
 </main>
-
-<script type="application/json" id="cat-colors">{{ site.data.categories | jsonify }}</script>
-<script type="application/json" id="posts-data">[
-{%- for post in site.posts -%}
-{%- assign cat = post.categories | first | default: "Genel" -%}
-{"d":{{ post.date | date: "%Y-%m-%d" | jsonify }},"t":{{ post.title | jsonify }},"u":{{ post.url | relative_url | jsonify }},"c":{{ cat | jsonify }},"g":{{ post.tags | jsonify }},"l":{{ post.lang | default: site.lang | slice: 0, 2 | jsonify }},"x":{{ post.description | default: post.excerpt | strip_html | normalize_whitespace | truncate: 170 | jsonify }}}{% unless forloop.last %},{% endunless %}
-{%- endfor -%}
-]</script>
-<script src="{{ '/assets/js/search.js' | relative_url }}" defer></script>
+<script src="{{ '/assets/js/home.js' | relative_url }}" defer></script>

@@ -6,14 +6,15 @@ sitemap: false
 ---
 <script>
   (function () {
-    var p = location.pathname;
+    var base = "{{ '/' | relative_url }}";
+    var p = location.pathname.slice(base.length - 1);
     var m = p.match(/^\/(tags|categories)\/([^/]+)\/?$/);
     if (m) {
-      var key = m[1] === "tags" ? "tag=" : "category=";
-      location.replace("/?q=" + encodeURIComponent(key + decodeURIComponent(m[2])));
+      var key = m[1] === "tags" ? "tag" : "category";
+      location.replace(base + "?" + key + "=" + encodeURIComponent(decodeURIComponent(m[2]).replace(/-/g, " ")) + "#posts");
     } else if (/^\/(tags|categories|archives|about)\/?$/.test(p)) {
-      location.replace(p.indexOf("about") > -1 ? "/#about" : "/");
+      location.replace(base);
     }
   })();
 </script>
-<p>Aradığın sayfa bu adreste yok. Yazıların tamamı <a href="{{ '/' | relative_url }}">ana sayfadaki aramada</a>.</p>
+<p>Aradığın sayfa bu adreste yok. Tüm yazılar <a href="{{ '/#posts' | relative_url }}">ana sayfada</a>.</p>
